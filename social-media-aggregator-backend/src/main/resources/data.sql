@@ -1,0 +1,3 @@
+INSERT INTO user (id, username, password, role) VALUES (1,'bruceWayne','$2a$04$Esu.vjPe.Eit2NnzsYrwUe3BVnmktQHo4DLRnitEFGZc/TevY9rJW', 'ROLE_ADMIN');
+INSERT INTO user (id, username, password, role) VALUES (2,'clarkKent', '$2a$04$Esu.vjPe.Eit2NnzsYrwUe3BVnmktQHo4DLRnitEFGZc/TevY9rJW', 'ROLE_ADMIN');
+INSERT INTO user (id, username, password, role) VALUES (3,'barryWest', '$2a$04$Esu.vjPe.Eit2NnzsYrwUe3BVnmktQHo4DLRnitEFGZc/TevY9rJW', 'ROLE_ADMIN');
