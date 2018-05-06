@@ -1,4 +1,8 @@
 /target/
+/logs/
+*.log
+*.gz
+
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
