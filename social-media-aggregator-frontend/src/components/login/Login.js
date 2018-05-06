@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
+import qs from 'qs';
+import ajax from '@fdaciuk/ajax';
 
 class Login extends Component {
     constructor(props){
@@ -15,31 +17,34 @@ class Login extends Component {
     }
 
     handleClick(event){
-         var apiBaseUrl = "http://localhost:4000/api/";
+         var apiBaseUrl = "http://localhost:8080/oauth/token";
          var self = this;
-         var payload={
-            "email":this.state.username,
-            "password":this.state.password
-         }
-         axios.post(apiBaseUrl+'login', payload)
-            .then(function (response) {
-                console.log(response);
-                if(response.data.code == 200){
-                    console.log("Login successfull");
 
+         var http = new XMLHttpRequest();
+         var basicAuth = 'Basic ' + btoa('social-client:social-secret');
+         var params = "grant_type=password&username="+this.state.username+"&password="+this.state.password;
+         http.open('POST', apiBaseUrl, true);
+         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         http.setRequestHeader("Authorization",basicAuth);
+
+         http.onreadystatechange = function (response) {
+                console.log(response);
+                if (http.readyState == 4) {
+                    if(http.status == 200){
+                       console.log("Login successfull");
+                    }
+                    else if(http.status == 204){
+                        console.log("Username password do not match");
+                        alert("username password do not match")
+                    }
+                    else{
+                        console.log("Username does not exists");
+                        alert("Username does not exist");
+                    }
                 }
-                else if(response.data.code == 204){
-                    console.log("Username password do not match");
-                    alert("username password do not match")
-                }
-                else{
-                    console.log("Username does not exists");
-                    alert("Username does not exist");
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+
+            };
+            http.send(params);
     }
 
     render() {
