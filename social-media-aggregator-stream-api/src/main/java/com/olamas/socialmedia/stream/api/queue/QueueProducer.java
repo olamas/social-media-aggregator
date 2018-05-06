@@ -22,8 +22,6 @@ public class QueueProducer<T> extends Thread {
 
     private Integer totalItemCounts;
 
-    private int totalMaxDeadItemCounts;
-
     private final AtomicInteger producingItemCount = new AtomicInteger(0);
 
     private boolean stop = false;
@@ -119,4 +117,5 @@ public class QueueProducer<T> extends Thread {
     public void setTotalItemCounts(Integer totalItemCounts) {
         this.totalItemCounts = totalItemCounts;
     }
+
 }
