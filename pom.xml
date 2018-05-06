@@ -12,7 +12,8 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   
-  <modules>	
+  <modules>
+    <module>social-media-aggregator-stream-api</module>
     <module>social-media-aggregator-frontend</module>
 	<module>social-media-aggregator-backend</module>	
   </modules>

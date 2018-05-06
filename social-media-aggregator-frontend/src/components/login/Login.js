@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
+import qs from 'qs';
+import ajax from '@fdaciuk/ajax';
 
 class Login extends Component {
     constructor(props){
@@ -15,14 +17,17 @@ class Login extends Component {
     }
 
     handleClick(event){
-         var apiBaseUrl = "http://localhost:4000/api/";
+         var apiBaseUrl = "http://localhost:8080/oauth/token";
          var self = this;
-         var payload={
-            "email":this.state.username,
-            "password":this.state.password
-         }
-         axios.post(apiBaseUrl+'login', payload)
-            .then(function (response) {
+         const data={"username":this.state.username,"password":this.state.password,"grant_type":"password"};
+         console.log(data);
+         var basicAuth = 'Basic ' + btoa('social-client:social-secret');
+
+         const options = {
+          headers: { 'content-type': 'application/x-www-form-urlencoded','Authorization': basicAuth}
+        };
+
+         axios.post(apiBaseUrl,qs.stringify(data),options).then(function (response) {
                 console.log(response);
                 if(response.data.code == 200){
                     console.log("Login successfull");
