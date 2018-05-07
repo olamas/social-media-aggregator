@@ -3,9 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import axios from 'axios';
-import qs from 'qs';
-import ajax from '@fdaciuk/ajax';
+import BoardPage from '../aggregator/BoardPage';
 
 class Login extends Component {
     constructor(props){
@@ -32,6 +30,9 @@ class Login extends Component {
                 if (http.readyState == 4) {
                     if(http.status == 200){
                        console.log("Login successfull");
+                        var uploadScreen=[];
+                        uploadScreen.push(<BoardPage appContext={self.props.appContext} role={self.state.loginRole}/>)
+                        self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
                     }
                     else if(http.status == 204){
                         console.log("Username password do not match");
@@ -52,7 +53,7 @@ class Login extends Component {
             <div>
                 <MuiThemeProvider>
                   <div>
-                  <AppBar title="Login" />
+                  <AppBar title="Social Media Agregator Login" />
                    <TextField
                      hintText="Enter your Username"
                      floatingLabelText="Username"

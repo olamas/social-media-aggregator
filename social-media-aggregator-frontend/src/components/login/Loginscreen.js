@@ -18,24 +18,14 @@ class Loginscreen extends Component {
   componentWillMount(){
     var loginscreen=[];
     loginscreen.push(<Login parentContext={this} appContext={this.props.parentContext}/>);
-    var loginmessage = "Not registered yet, Register Now";
     this.setState({
-                  loginscreen:loginscreen,
-                  loginmessage:loginmessage
-                    })
+                  loginscreen:loginscreen
+                  })
   }
   render() {
     return (
       <div className="loginscreen">
         {this.state.loginscreen}
-        <div>
-          {this.state.loginmessage}
-          <MuiThemeProvider>
-            <div>
-               <RaisedButton label={this.state.buttonLabel} primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
-           </div>
-          </MuiThemeProvider>
-        </div>
       </div>
     );
   }
