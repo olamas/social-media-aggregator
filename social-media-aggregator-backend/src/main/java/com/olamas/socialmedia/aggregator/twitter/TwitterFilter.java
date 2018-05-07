@@ -10,6 +10,16 @@ public class TwitterFilter implements Serializable{
 
     private String fromUser;
 
+    private String result;
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     public String getUserName() {
         return userName;
     }

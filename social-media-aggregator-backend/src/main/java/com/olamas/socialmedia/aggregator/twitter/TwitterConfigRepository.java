@@ -19,10 +19,11 @@ public class TwitterConfigRepository {
     public static final String SOCIAL_USERS_BASE_NODE = "/social/users";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterConfigRepository.class);
+    public static final String NODE_ADDED_OK_MESSAGE = "NODE_ADDED_OK";
 
     private CuratorFramework curator;
 
-    public void addNewFilter(TwitterFilter filter){
+    public TwitterFilter addNewFilter(TwitterFilter filter){
         this.initConfigServer();
         try {
             curator.blockUntilConnected();
@@ -33,11 +34,12 @@ public class TwitterConfigRepository {
             CuratorOp curatorOp = curator.transactionOp().create().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE).forPath(SOCIAL_USERS_BASE_NODE+"/"+filter.getUserName(),bytesData);
             String result = curator.transaction().forOperations(curatorOp).get(0).toString();
             curator.close();
+            filter.setResult(NODE_ADDED_OK_MESSAGE);
         }
         catch (Exception e){
             LOGGER.error("Unable to start reading nodes - ");
         }
-
+        return filter;
     }
 
     private void initConfigServer(){
