@@ -2,6 +2,8 @@
 ## Sistema de detección de mensajes en redes sociales basados en busquedas por usuarios
 La idea es construir un servicio agregador de entradas de APIs sociales, en este caso Twitter.
 
+![alt text](https://github.com/olamas/social-media-aggregator/blob/master/social-media-aggregator.jpg)
+
 Social media aggregator es un proyecto multi-modulo maven.
 Los módulos son:
 
