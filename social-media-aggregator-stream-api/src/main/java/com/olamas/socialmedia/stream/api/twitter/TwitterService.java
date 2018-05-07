@@ -136,15 +136,6 @@ public class TwitterService extends SourceDetectorService implements StreamListe
         filters.put(userFilter,twitterFilter);
     }
 
-    private Object getResultOfFuture(Future future) throws Exception {
-        if (future.isDone()) {
-            return future.get();
-        }
-        LOGGER.info(" waiting for result ");
-        Thread.sleep(1000);
-        return getResultOfFuture(future);
-    }
-
     @Override
     public void onTweet(Tweet tweet) {
         LOGGER.info(" returned Tweet is [" + tweet.getText() + "] ");
