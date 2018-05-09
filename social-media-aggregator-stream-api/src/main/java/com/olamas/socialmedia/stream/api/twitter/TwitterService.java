@@ -37,9 +37,6 @@ public class TwitterService extends SourceDetectorService implements StreamListe
     private Stream stream;
 
     @Autowired
-    private TwitterAsyncWorker twitterAsyncWorker;
-
-    @Autowired
     private QueueService queueService;
 
     @Autowired
@@ -96,10 +93,10 @@ public class TwitterService extends SourceDetectorService implements StreamListe
             public void process(WatchedEvent event) {
                 try {
 
-                    System.out.println("---------------------- Adding new filter from : " + event.getPath());
+                    LOGGER.info("---------------------- Adding new filter from : " + event.getPath());
                     List<String> userFilters = curator.getChildren().usingWatcher(watcher).forPath(SOCIAL_USERS_BASE_NODE);
                     readFilterConfiguration(userFilters);
-                    System.out.println("---------------------- Adding new filter : " + userFilters.size());
+                    LOGGER.info("---------------------- Adding new filter : " + userFilters.size());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -114,7 +111,7 @@ public class TwitterService extends SourceDetectorService implements StreamListe
         for (String userFilter:userFilters) {
             try {
                 String filterValue = new String(curator.getData().usingWatcher(watcher).forPath(SOCIAL_USERS_BASE_NODE+"/"+userFilter));
-                System.out.println("Adding filter : " + filterValue);
+                LOGGER.info("Adding filter : " + filterValue);
                 filter.track(filterValue);
                 updateFilterList(userFilter,filterValue);
             }catch (Exception e) {
@@ -162,7 +159,7 @@ public class TwitterService extends SourceDetectorService implements StreamListe
     @Override
     public void stop() {
         this.stream.close();
-        System.out.println("Closing curator.............");
+        LOGGER.info("Closing curator.............");
         curator.close();
     }
 }

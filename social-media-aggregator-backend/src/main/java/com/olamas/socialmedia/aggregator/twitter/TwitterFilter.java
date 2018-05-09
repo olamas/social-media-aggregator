@@ -10,15 +10,7 @@ public class TwitterFilter implements Serializable{
 
     private String fromUser;
 
-    private String result;
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
+    private boolean validFilter;
 
     public String getUserName() {
         return userName;
@@ -42,5 +34,13 @@ public class TwitterFilter implements Serializable{
 
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
+    }
+
+    public boolean isValidFilter() {
+        return validFilter;
+    }
+
+    public void setValidFilter(boolean validFilter) {
+        this.validFilter = validFilter;
     }
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class QueueService {
 
-    private static final Logger log = LoggerFactory.getLogger(QueueService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueService.class);
 
     public static final String QUEUESERVICE_TWEETS_DIR = "/queueservice/tweets";
 
@@ -39,13 +39,13 @@ public class QueueService {
         try {
             if (bigQueue == null) {
                 bigQueue = new BigQueueImpl(queueDir, type);
-                log.info("Creating queue:" + type + " successfully..");
+                LOGGER.info("Creating queue:" + type + " successfully..");
                 startCleanMonitor();
             }
             isQueueReady = true;
 
         } catch (IOException e) {
-            log.error("Error trying to create queues type: " + this.type, e);
+            LOGGER.error("Error trying to create queues type: " + this.type, e);
         }
         return isQueueReady;
     }
@@ -58,18 +58,18 @@ public class QueueService {
         consumer.setTotalItemCounts(10);
         consumer.setQueue(bigQueue);
 
-        log.info("Starting consumer queue for type :" + this.type);
+        LOGGER.info("Starting consumer queue for type :" + this.type);
         producer.setQueue(bigQueue);
         producer.setTotalItemCounts(10);
 
-        log.info("Starting producer queue for type :" + this.type);
+        LOGGER.info("Starting producer queue for type :" + this.type);
         serviceProducerConsumer.execute(consumer);
         serviceProducerConsumer.execute(producer);
     }
 
     private void startCleanMonitor() {
         if (!executor.isShutdown()) {
-            log.info("Starting monitor to clean files for queue - type:" + this.type);
+            LOGGER.info("Starting monitor to clean files for queue - type:" + this.type);
             executor.scheduleWithFixedDelay(new CleanQueuesMonitor(),5,
                     600, TimeUnit.SECONDS);
         }
@@ -86,13 +86,13 @@ public class QueueService {
                 executor.shutdown();
             }
             if (bigQueue != null) {
-                log.debug("gc de big queue for queue - type:" + this.type);
+                LOGGER.debug("gc de big queue for queue - type:" + this.type);
                 bigQueue.gc();
                 bigQueue.close();
             }
 
         } catch (Exception e) {
-            log.error("Unexpected error trying to shutdown queue service. Cause", e);
+            LOGGER.error("Unexpected error trying to shutdown queue service. Cause", e);
         }
 
     }
@@ -106,11 +106,11 @@ public class QueueService {
         public void run() {
             try {
                 if (bigQueue != null) {
-                    log.debug("gc de big queue for queue - type:" + type);
+                    LOGGER.debug("gc de big queue for queue - type:" + type);
                     bigQueue.gc();
                 }
             } catch (Exception e) {
-                log.error("There was an error cleaning queues", e);
+                LOGGER.error("There was an error cleaning queues", e);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.olamas.socialmedia.aggregator.twitter;
 
+import com.olamas.socialmedia.aggregator.exception.ConfigServerException;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.transaction.CuratorOp;
@@ -9,41 +10,48 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TwitterConfigRepository {
 
-    public static final String ZOOKEEPER_CONECTION_HOST = "localhost:2181";
+    @Value("${zookeeper.server.host}")
+    private String zookeeperHost;
 
-    public static final String SOCIAL_USERS_BASE_NODE = "/social/users";
+    @Value("${zookeeper.server.base.node}")
+    public String zookeeperBaseNode;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterConfigRepository.class);
-    public static final String NODE_ADDED_OK_MESSAGE = "NODE_ADDED_OK";
 
     private CuratorFramework curator;
 
-    public TwitterFilter addNewFilter(TwitterFilter filter){
+    public TwitterFilter addNewFilter(TwitterFilter filter) throws ConfigServerException {
         this.initConfigServer();
         try {
             curator.blockUntilConnected();
             // Ensure the group node exists
-            new EnsurePath(SOCIAL_USERS_BASE_NODE).ensure(curator.getZookeeperClient());
+            new EnsurePath(zookeeperBaseNode).ensure(curator.getZookeeperClient());
             // Read users filters
             byte[] bytesData = filter.getFilterText().getBytes();
-            CuratorOp curatorOp = curator.transactionOp().create().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE).forPath(SOCIAL_USERS_BASE_NODE+"/"+filter.getUserName(),bytesData);
+            CuratorOp curatorOp = curator.transactionOp().create().withMode(CreateMode.PERSISTENT)
+                    .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE).forPath(zookeeperBaseNode+"/"+filter.getUserName(),bytesData);
             String result = curator.transaction().forOperations(curatorOp).get(0).toString();
+            LOGGER.info("Configuration Node value = {0} was added succesfully",result);
             curator.close();
-            filter.setResult(NODE_ADDED_OK_MESSAGE);
+            LOGGER.info("Closing connection to Configuration Server - zookeeper client - close");
+            if(result!=null)
+                filter.setValidFilter(true);
         }
         catch (Exception e){
-            LOGGER.error("Unable to start reading nodes - ");
+            throw new ConfigServerException("Unable to start reading nodes - Config Server error");
         }
         return filter;
     }
 
     private void initConfigServer(){
-        curator = CuratorFrameworkFactory.newClient(ZOOKEEPER_CONECTION_HOST, 10000, 2000, new RetryOneTime(2000));
+        LOGGER.info("Initializing Configuration Server client - zookeeper client - starting");
+        curator = CuratorFrameworkFactory.newClient(zookeeperHost, 10000, 2000, new RetryOneTime(2000));
         curator.start();
     }
 

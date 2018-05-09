@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class QueueProducer<T> extends Thread {
 
-    private static final Logger log = LoggerFactory.getLogger(QueueProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueProducer.class);
 
     private IBigQueue bigQueue;
 
@@ -40,13 +40,13 @@ public class QueueProducer<T> extends Thread {
             byte[] item = this.getItemSerialized(document);
             bigQueue.enqueue(item);
             producingItemCount.incrementAndGet();
-            log.debug("Adding item " + producingItemCount.get() + " type: " + this.type + " into the queue");
+            LOGGER.debug("Adding item " + producingItemCount.get() + " type: " + this.type + " into the queue");
             if (getTotalItemCounts() != null && producingItemCount.get() >= getTotalItemCounts()) {
                 this.notifyConsumers();
                 producingItemCount.set(0);
             }
         } catch (IOException ex) {
-            log.error("Error trying to serealize item type: " + this.type, ex);
+            LOGGER.error("Error trying to serealize item type: " + this.type, ex);
         } finally {
 
         }
@@ -96,7 +96,7 @@ public class QueueProducer<T> extends Thread {
             item = bos.toByteArray();
 
         } catch (IOException ex) {
-            log.error("Error trying to serealize item:" + ex);
+            LOGGER.error("Error trying to serealize item:" + ex);
         } finally {
             try {
                 if (out != null) {
@@ -104,7 +104,7 @@ public class QueueProducer<T> extends Thread {
                     bos.close();
                 }
             } catch (IOException ex) {
-                log.error("Error closing stream trying to serealize", ex);
+                LOGGER.error("Error closing stream trying to serealize", ex);
             }
         }
         return item;

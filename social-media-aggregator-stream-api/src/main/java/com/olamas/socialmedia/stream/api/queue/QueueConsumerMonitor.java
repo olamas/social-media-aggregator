@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class QueueConsumerMonitor <T> implements Runnable {
 
-    private static final Logger log = LoggerFactory.getLogger(QueueConsumerMonitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueueConsumerMonitor.class);
 
     private QueueConsumer<T> consumerToMonitor;
 
@@ -15,7 +15,7 @@ public class QueueConsumerMonitor <T> implements Runnable {
 
     @Override
     public void run() {
-        log.info("Monitor is notifing Consumer of "+consumerToMonitor.getType()+" to read queue");
+        LOGGER.info("Monitor is notifing Consumer to read queue");
         this.consumerToMonitor.nofityQueueReady();
     }
 }
