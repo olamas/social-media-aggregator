@@ -19,7 +19,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Component
@@ -136,9 +139,31 @@ public class TwitterService extends SourceDetectorService implements StreamListe
     @Override
     public void onTweet(Tweet tweet) {
         LOGGER.info(" returned Tweet is [" + tweet.getText() + "] ");
-        TwitterMessage message = new TwitterMessage(tweet.getIdStr(),tweet.getText());
-        message.setFromUser(tweet.getFromUser());
-        this.queueProducer.addItem(message);
+        String tweetText = tweet.getText();
+        List<String> users = getUsersFilters(tweetText);
+
+        for (String user:users) {
+            TwitterMessage message = new TwitterMessage(tweet.getIdStr(),tweet.getText());
+            message.setFromUser(tweet.getFromUser());
+            message.setUserFilter(user);
+            message.setFilter(filters.get(user).getTopic());
+            this.queueProducer.addItem(message);
+        }
+    }
+
+    private List<String> getUsersFilters(final String tweetText){
+        List<String> usersByFilter = new ArrayList<>();
+        filters.entrySet().stream().filter(x->matchFilter(x.getValue().getTopic(),tweetText))
+                .forEach(x->usersByFilter.add(x.getKey()));
+
+        return usersByFilter;
+    }
+
+    private boolean matchFilter(String filter,String tweetText){
+        String regex = "\\b"+filter+"\\b";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(tweetText);
+        return matcher.find();
     }
 
     @Override

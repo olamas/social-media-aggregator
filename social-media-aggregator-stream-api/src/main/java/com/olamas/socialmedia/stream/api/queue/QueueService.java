@@ -69,7 +69,7 @@ public class QueueService {
 
     private void startCleanMonitor() {
         if (!executor.isShutdown()) {
-            LOGGER.info("Starting monitor to clean files for queue - type:" + this.type);
+            LOGGER.info("Starting monitor to clean objects from queue - type:" + this.type);
             executor.scheduleWithFixedDelay(new CleanQueuesMonitor(),5,
                     600, TimeUnit.SECONDS);
         }

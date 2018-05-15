@@ -13,6 +13,10 @@ public class TwitterMessage implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String userFilter;
+
+    private String filter;
+
     private final String idStr;
 
     private final String text;
@@ -32,6 +36,14 @@ public class TwitterMessage implements Serializable{
         this.id = id;
     }
 
+    public String getUserFilter() {
+        return userFilter;
+    }
+
+    public void setUserFilter(String userFilter) {
+        this.userFilter = userFilter;
+    }
+
     public String getIdStr() {
         return idStr;
     }
@@ -46,5 +58,13 @@ public class TwitterMessage implements Serializable{
 
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 }
