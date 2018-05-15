@@ -25,6 +25,9 @@ public class TwitterFilterServiceTest {
     @Mock
     private TwitterConfigRepository twitterConfigRepository;
 
+    @Mock
+    private TwitterRepository twitterRepository;
+
     @InjectMocks
     private TwitterFilterService twitterFilterService;
 

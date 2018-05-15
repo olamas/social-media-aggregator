@@ -17,11 +17,15 @@ public class TwitterMessage implements Serializable {
 
     private String filter;
 
-    private final String idStr;
+    private String idStr;
 
-    private final String text;
+    private String text;
 
     private String fromUser;
+
+    public TwitterMessage(){
+
+    }
 
     public TwitterMessage(final String idStr,final String text){
         this.idStr = idStr;
@@ -48,8 +52,16 @@ public class TwitterMessage implements Serializable {
         return idStr;
     }
 
+    public void setIdStr(String idStr){
+        this.idStr = idStr;
+    }
+
     public String getText() {
         return text;
+    }
+
+    public void setText(String text){
+        this.text = text;
     }
 
     public String getFromUser() {
