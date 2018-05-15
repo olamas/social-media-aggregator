@@ -1,7 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+        </dependency>
+    </dependencies>
+    <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.1.RELEASE</version>
@@ -13,9 +20,10 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>social-media-aggregator-stream-api</module>
-    <module>social-media-aggregator-frontend</module>
-	<module>social-media-aggregator-backend</module>	
+      <module>social-media-aggregator-common</module>
+      <module>social-media-aggregator-stream-api</module>
+      <module>social-media-aggregator-frontend</module>
+	  <module>social-media-aggregator-backend</module>
   </modules>
   <name>social-media-aggregator</name>  
   <description>Social Media Aggregator - Solution</description>

@@ -1,9 +1,8 @@
 package com.olamas.socialmedia.stream.api.twitter;
 
 
-import com.olamas.socialmedia.stream.api.queue.QueueConsumer;
-import com.olamas.socialmedia.stream.api.queue.QueueProducer;
 import com.olamas.socialmedia.stream.api.queue.QueueService;
+import com.olamas.socialmedia.twitter.TwitterMessage;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryOneTime;
@@ -15,12 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

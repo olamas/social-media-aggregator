@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import com.olamas.socialmedia.twitter.TwitterMessage;
+
 
 public class QueueProducer<T> extends Thread {
 

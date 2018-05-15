@@ -2,7 +2,6 @@ package com.olamas.socialmedia.aggregator.login;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")

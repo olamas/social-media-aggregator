@@ -1,11 +1,11 @@
-package com.olamas.socialmedia.stream.api.twitter;
+package com.olamas.socialmedia.twitter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "tweet")
-public class TwitterMessage implements Serializable{
+public class TwitterMessage implements Serializable {
 
     private static final long serialVersionUID = 1113799434508676095L;
 

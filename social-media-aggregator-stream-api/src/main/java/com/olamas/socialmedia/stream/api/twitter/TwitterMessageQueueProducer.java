@@ -1,5 +1,7 @@
 package com.olamas.socialmedia.stream.api.twitter;
+
 import com.olamas.socialmedia.stream.api.queue.QueueProducer;
+import com.olamas.socialmedia.twitter.TwitterMessage;
 import org.springframework.stereotype.Component;
 
 @Component
