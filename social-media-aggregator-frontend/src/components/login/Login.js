@@ -4,14 +4,29 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BoardPage from '../aggregator/BoardPage';
+import { Redirect } from 'react-router'
 
 class Login extends Component {
     constructor(props){
       super(props);
       this.state={
         username:'',
-        password:''
+        password:'',
+        token:'',
+        redirectToBoard: false
       }
+    }
+
+    readBody(xhr) {
+        var data;
+        if (!xhr.responseType || xhr.responseType === "text") {
+            data = xhr.responseText;
+        } else if (xhr.responseType === "document") {
+            data = xhr.responseXML;
+        } else {
+            data = xhr.response;
+        }
+        return data;
     }
 
     handleClick(event){
@@ -29,10 +44,9 @@ class Login extends Component {
                 console.log(response);
                 if (http.readyState == 4) {
                     if(http.status == 200){
-                       console.log("Login successfull");
-                        var uploadScreen=[];
-                        uploadScreen.push(<BoardPage appContext={self.props.appContext} role={self.state.loginRole}/>)
-                        self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
+                       var json = JSON.parse(self.readBody(http));
+                       var accessToken = json.access_token;
+                       self.setState({redirectToBoard:true});
                     }
                     else if(http.status == 204){
                         console.log("Username password do not match");
@@ -48,7 +62,14 @@ class Login extends Component {
             http.send(params);
     }
 
+
+
+
     render() {
+        const { redirectToBoard } = this.state;
+        if (redirectToBoard) {
+              return <Redirect to = '/board' />;
+        }
         return (
             <div>
                 <MuiThemeProvider>

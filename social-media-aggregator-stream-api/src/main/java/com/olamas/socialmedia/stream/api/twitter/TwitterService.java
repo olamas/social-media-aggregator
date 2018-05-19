@@ -12,6 +12,7 @@ import org.apache.zookeeper.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class TwitterService extends SourceDetectorService implements StreamListe
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterService.class);
 
-    public static final String ZOOKEEPER_CONECTION_HOST = "localhost:2181";
+    @Value("${zookeeoer.conection.host.url}")
+    private String zookeeperUrl;
 
     public static final String SOCIAL_USERS_BASE_NODE = "/social/users";
 
@@ -72,7 +74,7 @@ public class TwitterService extends SourceDetectorService implements StreamListe
 
     private void configZookeeperClient(){
         initWatcher();
-        curator = CuratorFrameworkFactory.newClient(ZOOKEEPER_CONECTION_HOST, 10000, 2000, new RetryOneTime(2000));
+        curator = CuratorFrameworkFactory.newClient(zookeeperUrl, 10000, 2000, new RetryOneTime(2000));
         curator.start();
         try {
             // Ensure the group node exists

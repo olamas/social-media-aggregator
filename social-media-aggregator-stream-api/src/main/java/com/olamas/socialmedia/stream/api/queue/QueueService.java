@@ -4,6 +4,7 @@ import com.leansoft.bigqueue.BigQueueImpl;
 import com.leansoft.bigqueue.IBigQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class QueueService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueService.class);
 
-    public static final String QUEUESERVICE_TWEETS_DIR = "/queueservice/tweets";
+    private String queueServiceTweetsDir = "./queueservice/tweets";
 
     private ExecutorService serviceProducerConsumer;
 
@@ -30,7 +31,7 @@ public class QueueService {
     private String type;
 
     public QueueService() {
-        this.queueDir = QUEUESERVICE_TWEETS_DIR;
+        this.queueDir = queueServiceTweetsDir;
     }
 
     public boolean initQueue(String type) {
@@ -38,6 +39,7 @@ public class QueueService {
         this.type = type;
         try {
             if (bigQueue == null) {
+                LOGGER.info("Starting to creating queue:" + type + "in "+queueDir);
                 bigQueue = new BigQueueImpl(queueDir, type);
                 LOGGER.info("Creating queue:" + type + " successfully..");
                 startCleanMonitor();

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {BootstrapTable,
-       TableHeaderColumn} from 'react-bootstrap-table';
+import {BootstrapTable,TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/css/react-bootstrap-table.css'
 
 class Board extends Component {
@@ -42,15 +41,19 @@ class Board extends Component {
 
 
   render() {
+    const { accessToken } = localStorage.getItem('access_token');
+    if (accessToken != null) {
+
+    }
     return (
-      <MuiThemeProvider>
+     <MuiThemeProvider>
           <div>
-          <TextField
-                 hintText="Enter Filter value"
-                 floatingLabelText="filter"
-                 onChange = {(event,newValue) => this.setState({filter:newValue})}
-                 />
-               <RaisedButton label="Filter" primary={true} onClick={(event) => this.handleClick(event)}/>
+              <TextField
+                     hintText="Enter Filter value"
+                     floatingLabelText="filter"
+                     onChange = {(event,newValue) => this.setState({filter:newValue})}
+                     />
+                   <RaisedButton label="Filter" primary={true} onClick={(event) => this.handleClick(event)}/>
           </div>
           <div>
             <BootstrapTable data={this.props.data}>
