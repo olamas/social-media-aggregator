@@ -46,7 +46,7 @@ public class TwitterConfigRepository {
                 curatorOp = curator.transactionOp().setData().forPath(userPath, bytesData);
             }
             String result = curator.transaction().forOperations(curatorOp).get(0).toString();
-            LOGGER.info("Configuration Node value = {0} was added succesfully", result);
+            LOGGER.info("Configuration Node value was added succesfully");
             curator.close();
             LOGGER.info("Closing connection to Configuration Server - zookeeper client - close");
             if (result != null)

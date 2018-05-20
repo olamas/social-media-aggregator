@@ -20,7 +20,6 @@ public class TwitterMessageQueueConsumer extends QueueConsumer<TwitterMessage> {
 
     @Override
     public void process(TwitterMessage tweet) {
-        System.out.println("Saving new tweet ................: "+tweet.getText()+"  from: " +tweet.getFromUser());
         twitterMessageRepository.save(tweet);
     }
 
