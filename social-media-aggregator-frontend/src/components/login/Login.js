@@ -46,7 +46,11 @@ class Login extends Component {
                     if(http.status == 200){
                        var json = JSON.parse(self.readBody(http));
                        var accessToken = json.access_token;
-                       self.setState({redirectToBoard:true});
+                       const user = {
+                                        username:self.state.username,
+                                        token:accessToken,
+                                        redirectToBoard:true};
+                       self.setState(user);
                     }
                     else if(http.status == 204){
                         console.log("Username password do not match");
@@ -66,9 +70,12 @@ class Login extends Component {
 
 
     render() {
-        const { redirectToBoard } = this.state;
+        const redirectToBoard  = this.state.redirectToBoard;
+        const username = this.state.username;
+        const token = this.state.token;
         if (redirectToBoard) {
-              return <Redirect to = '/board' />;
+              var path = "/board/"+ username+"/"+token;
+              return <Redirect to = {path}  />;
         }
         return (
             <div>

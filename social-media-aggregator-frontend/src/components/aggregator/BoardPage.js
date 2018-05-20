@@ -10,7 +10,9 @@ class Board extends Component {
   constructor(props){
         super(props);
         this.state={
-          filter:''
+          filter:'',
+          token: props.match.params.token,
+          username: props.match.params.username
         }
    }
 
@@ -18,12 +20,19 @@ class Board extends Component {
            var apiBaseUrl = "http://localhost:8080/twitter/filter";
            var self = this;
            var http = new XMLHttpRequest();
+           var basicAuth = 'Bearer ' + this.state.token;
+           var params = {userName: this.state.username,
+                            filterText: this.state.filter,
+                            fromUser:null,
+                            validFilter:false};
+
            http.open('POST', apiBaseUrl, true);
+           http.setRequestHeader("Content-type", "application/json");
+           http.setRequestHeader("Authorization",basicAuth);
            http.onreadystatechange = function (response) {
                   console.log(response);
                   if (http.readyState == 4) {
                       if(http.status == 200){
-
 
                       }
                       else if(http.status == 204){
@@ -33,20 +42,17 @@ class Board extends Component {
 
                       }
                   }
-
               };
-              http.send();
+              http.send(JSON.stringify(params));
    }
 
-
-
   render() {
-    const { accessToken } = localStorage.getItem('access_token');
-    if (accessToken != null) {
-
-    }
     return (
      <MuiThemeProvider>
+          <div>
+            <h1>Hello {this.state.username}!</h1>
+            <h2>{this.state.token}!</h2>
+          </div>
           <div>
               <TextField
                      hintText="Enter Filter value"
@@ -54,6 +60,9 @@ class Board extends Component {
                      onChange = {(event,newValue) => this.setState({filter:newValue})}
                      />
                    <RaisedButton label="Filter" primary={true} onClick={(event) => this.handleClick(event)}/>
+          </div>
+          <div>
+            <h1> </h1>
           </div>
           <div>
             <BootstrapTable data={this.props.data}>

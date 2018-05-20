@@ -22,7 +22,7 @@ class App extends Component {
         <div className="App">
          <div className="App-intro">
                <Route path="/login" component={Loginscreen}/>
-               <Route path="/board" component={BoardPage}/>
+               <Route path="/board/:username/:token" component={BoardPage}/>
           </div>
         </div>
       );

@@ -33,15 +33,25 @@ public class TwitterConfigRepository {
             // Ensure the group node exists
             new EnsurePath(zookeeperBaseNode).ensure(curator.getZookeeperClient());
             // Read users filters
+
+            String userPath = zookeeperBaseNode+"/"+filter.getUserName();
+
             byte[] bytesData = filter.getFilterText().getBytes();
-            CuratorOp curatorOp = curator.transactionOp().create().withMode(CreateMode.PERSISTENT)
-                    .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE).forPath(zookeeperBaseNode+"/"+filter.getUserName(),bytesData);
+            CuratorOp curatorOp;
+            if(curator.checkExists().forPath(userPath) == null) {
+                 curatorOp = curator.transactionOp().create().withMode(CreateMode.PERSISTENT)
+                         .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE).forPath(userPath, bytesData);
+            }
+            else{
+                curatorOp = curator.transactionOp().setData().forPath(userPath, bytesData);
+            }
             String result = curator.transaction().forOperations(curatorOp).get(0).toString();
-            LOGGER.info("Configuration Node value = {0} was added succesfully",result);
+            LOGGER.info("Configuration Node value = {0} was added succesfully", result);
             curator.close();
             LOGGER.info("Closing connection to Configuration Server - zookeeper client - close");
-            if(result!=null)
+            if (result != null)
                 filter.setValidFilter(true);
+
         }
         catch (Exception e){
             throw new ConfigServerException("Unable to start reading nodes - Config Server error");
