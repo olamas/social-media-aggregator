@@ -7,6 +7,8 @@ La idea es construir un servicio agregador de entradas de APIs sociales, en este
 Social media aggregator es un proyecto multi-modulo maven.
 Los módulos son:
 
+- social-media-aggregator-common
+
 - social-media-aggregator-backend
 
 - social-media-aggregator-frontend
@@ -24,6 +26,7 @@ social-media-aggregator$ mvn clean install
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Build Order:
 [INFO]
+[INFO] social-media-aggregator-common 
 [INFO] social-media-aggregator-stream-api
 [INFO] social-media-aggregator-frontend
 [INFO] social-media-aggregator-backend
@@ -35,6 +38,7 @@ social-media-aggregator$ mvn clean install
 
 [INFO] Reactor Summary:
 [INFO]
+[INFO] social-media-aggregator-common...................... SUCCESS [  0.128 s] 
 [INFO] social-media-aggregator-stream-api ................. SUCCESS [ 22.013 s]
 [INFO] social-media-aggregator ............................ SUCCESS [  0.128 s]
 [INFO] social-media-aggregator-frontend ................... SUCCESS [01:30 min]
@@ -43,10 +47,20 @@ social-media-aggregator$ mvn clean install
 
 
 ```
+Para generar informacion en el sistema, necesitamos correr un proceso "daemon" que permita obtener tweets filtrados de acuerdo a las preferencias del usuario del stream de datos de Tweeter.
 
-Si todo esta ok, navegar hasta la carpetasocial-media-aggregator-stream-api y ejecutar:
+Como primer paso ,si todo el build esta ok, navegar hasta la carpeta social-media-aggregator-stream-api y ejecutar:
 ```
-social-media-aggregator-stream-api$ mvn java -jar target/social-media-aggregator-stream-api-1.0-FINAL-exec.jar "start"
+social-media-aggregator-stream-api$ mvn java -jar target/social-media-aggregator-stream-api-1.0-FINAL-exec.jar
+
+```
+El servicio se conecta al configuration manager (zookeeper) para buscar nodos de información (/social/users) relacionadas con el cliente:
+
+
+
+##NOTA: el build del proceso es generado como "fully executable" para aplicaciones en sistema Unix. (ver implementación como servicio).
+
+
 ```
 
 
