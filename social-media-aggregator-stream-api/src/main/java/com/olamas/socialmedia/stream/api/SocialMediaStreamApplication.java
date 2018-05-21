@@ -38,15 +38,8 @@ public class SocialMediaStreamApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (args == null || args.length == 0) {
-			LOGGER.error("Value is expected as the command line parameter");
-			return;
-		}
-
-		if (args[0].equals("start")) {
-			executorService = Executors.newSingleThreadExecutor();
-			executorService.execute(twitterService);
-		}
+		executorService = Executors.newSingleThreadExecutor();
+		executorService.execute(twitterService);
 	}
 
 	@PreDestroy
